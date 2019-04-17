@@ -1,0 +1,38 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.12
+    working_directory:
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-mod-v1-{{ checksum "go.sum" }}
+      - run:
+          name: Ensure dependencies are installed
+          command: |
+            GO111MODULE=on go mod vendor
+      - save_cache:
+          key: go-mod-v1-{{ checksum "go.sum" }}
+          paths:
+            - "/go/pkg/mod"
+      - run:
+          name: Running tests
+          command: |
+            go test -v ./...
+      - setup_remote_docker
+      - run:
+          name: Build Docker
+          command: |
+              docker build .
+#      - run:
+#          name: Push to container repo...
+#       - run:
+#           name: Push patch to CD with branch semantics (if branch == master -> push patch to ArgoCD, or hit a jenkins webhook), or could have container (from previous step) repo do this.
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build:
+          context: default

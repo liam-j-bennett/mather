@@ -1,0 +1,15 @@
+bases:
+  - ./../base
+
+commonLabels:
+  app: mather
+
+namePrefix: mather-dev-
+namespace: dev
+
+images: # Inject this in from CD
+  - name: mather
+    newTag: 1.1.0
+
+patches:
+  - dev_secrets.yaml

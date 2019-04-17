@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: the-app
+    spec:
+      containers:
+        - name: mather-app
+          image: mather:1.0.0
+          command: ["/matherapi"]
+          ports:
+            - name: rpc-port
+              containerPort: 5000
+            - name: http-port
+              containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /_health
+              port: 8000
+              initialDelaySeconds: 5
+              periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /_ready
+              port: 8000
+              initialDelaySeconds: 15
+              periodSeconds: 20
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap
+                  key: port
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: api_key

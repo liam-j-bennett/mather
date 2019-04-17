@@ -1,0 +1,16 @@
+bases:
+  - ./../base
+
+commonLabels:
+  app: mather
+
+namePrefix: mather-prod-
+namespace: prod
+
+images: # Inject this in from CD
+  - name: mather
+    newTag: 1.0.10
+
+patches:
+  - prod_secrets.yaml
+  - service_type.yaml

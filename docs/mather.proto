@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package api;
+
+service Mather {
+    rpc Add(MathRequest) returns (MathIntResponse) {}
+    rpc Subtract(MathRequest) returns (MathIntResponse) {}
+    rpc Multiply(MathRequest) returns (MathIntResponse) {}
+    rpc Divide(MathRequest) returns (MathFloatResponse) {}
+    rpc Hello(NameRequest) returns (HelloResponse) {}
+}
+
+message MathRequest {
+    int64 a = 1;
+    int64 b = 2;
+}
+
+message NameRequest {
+    string name = 1;
+}
+
+//TODO: These could be a single message with a oneof
+message MathIntResponse {
+    int64 result = 1;
+}
+
+message MathFloatResponse {
+    double result = 1;
+}
+
+message HelloResponse {
+    string greeting = 1;
+}
