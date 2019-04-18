@@ -13,7 +13,7 @@ CLI setup
 - Run help command: `./mather --help`
 - Run any of the commands against the local server: `./mather <add, subtract, multiply, divide> x y`
 
-###Additional thinking
+### Additional thinking
 Below is information regarding the project
 
 #### 12Factors Alignment
